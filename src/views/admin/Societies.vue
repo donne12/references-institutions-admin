@@ -24,27 +24,27 @@
                                     <v-form v-bind:disabled="loading" lazy-validation ref="dialogForm">
                                         <v-row>
                                             <v-col cols="12" sm="6" md="6">
-                                                <v-text-field :disabled="loading" :rules="titleRule" v-model="editedItem.raison_sociale" label="Raison sociale"></v-text-field>
+                                                <v-text-field prepend-inner-icon="mdi-clipboard-account" :disabled="loading" :rules="titleRule" v-model="editedItem.raison_sociale" label="Raison sociale"></v-text-field>
                                             </v-col>
                                         </v-row>
                                         <v-row>
                                             <v-col cols="12" sm="6" md="6">
-                                                <v-text-field :disabled="loading" :rules="titleRule" v-model="editedItem.description" label="Description"></v-text-field>
+                                                <v-text-field prepend-inner-icon="mdi-format-align-justify" :disabled="loading" :rules="titleRule" v-model="editedItem.description" label="Description"></v-text-field>
                                             </v-col>
                                         </v-row>
                                         <v-row>
                                             <v-col cols="12" sm="6" md="6">
-                                                <v-select label="Secteur" :disabled="loading" :rules="titleRule" v-model="editedItem.secteur" :items="items2"></v-select>
+                                                <v-select prepend-inner-icon="mdi-apps" label="Secteur" :disabled="loading" :rules="titleRule" v-model="editedItem.secteur" :items="items2"></v-select>
                                             </v-col>
                                         </v-row>
                                         <v-row>
                                             <v-col cols="12" sm="6" md="6">
-                                                <v-text-field :disabled="loading" :rules="titleRule" v-model="editedItem.localisation" label="Localisation"></v-text-field>
+                                                <v-text-field   prepend-inner-icon="mdi-map-marker" :disabled="loading" :rules="titleRule" v-model="editedItem.localisation" label="Localisation"></v-text-field>
                                             </v-col>
                                         </v-row>
                                         <v-row>
                                             <v-col cols="12" sm="6" md="6">
-                                                <v-text-field :disabled="loading" :rules="titleRule" v-model="editedItem.contact" label="Contact"></v-text-field>
+                                                <v-text-field prepend-inner-icon="mdi-whatsapp" counter-value="8" counter="8" maxlength="8" :disabled="loading" :rules="titleRule" v-model="editedItem.contact" label="Contact -Whatsapp-" aria-valuemax="8"></v-text-field>
                                             </v-col>
                                             <v-col cols="12" sm="6" md="6">
                                                 <input type="file" class="d-none" ref="uploader" accept="image/*" @change="selectFile()">
@@ -206,7 +206,7 @@
                 societies : 'societies/getsocieties'
             }),
             formTitle() {
-                return this.editedIndex === -1 ? "Nouvelle instution" : "Modifier une institution";
+                return this.editedIndex === -1 ? "Nouvelle institution" : "Modifier une institution";
             },
         },
 
@@ -232,8 +232,8 @@
                 let society = this.societies.filter(c => c.id == id)[0];
                 console.log(society.id);
                 if(society === undefined) {
-                    console.log('undefined qarşim');
-                    return {nom: 'Unknown'};
+                    console.log('Indéfini');
+                    return {nom: 'Inconnu'};
                 }
                 return society;
             },
@@ -258,7 +258,7 @@
                         this.loading = false;
                         if (snapshot.state === "success") {
                             snapshot.ref.getDownloadURL().then(function (downloadURL) {
-                                vm.editedItem.image = downloadURL;
+                                vm.editedItem.img = downloadURL;
                             });
                         } else {
                             this.snack = true
@@ -306,6 +306,7 @@
             },
 
             async save() {
+                this.editedItem.contact= this.editedItem.contact.replace(/ /g,"");
                 this.editedItem.searchKey = this.editedItem.raison_sociale[0];
                 if(!this.$refs.dialogForm.validate()) return;
 
