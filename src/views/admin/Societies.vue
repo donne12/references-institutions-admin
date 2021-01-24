@@ -154,6 +154,7 @@
                     contact: "",
                     secteur: "",
                     img: "",
+                    searchKey: "",
                 },
                 items2: ["Communication,\nPublicité",
                     "Batiment et construction",
@@ -186,6 +187,7 @@
                     contact: "",
                     secteur: "",
                     img: "",
+                    searchKey: "",
                 },
                 titleRule: [
                     v => !!v || 'Champ obligatoire',
@@ -304,6 +306,7 @@
             },
 
             async save() {
+                this.editedItem.searchKey = this.editedItem.raison_sociale[0];
                 if(!this.$refs.dialogForm.validate()) return;
 
                 if (this.editedIndex > -1) {
