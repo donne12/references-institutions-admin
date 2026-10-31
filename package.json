@@ -25,5 +25,8 @@
   "type": "module",
   "overrides": {
     "@grpc/grpc-js": "^1.14.0"
+  },
+  "engines": {
+    "node": ">=20.19.0"
   }
 }
