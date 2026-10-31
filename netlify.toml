@@ -1,0 +1,12 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+# Single-page app: every path is served by index.html (vue-router history mode)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
