@@ -5,25 +5,25 @@
         <v-col cols="12"
               sm="8"
               md="4">
-          <v-card class="mx-auto" shaped elevation="20">
+          <v-card class="mx-auto" style="border-radius: 24px 4px;" elevation="20">
 
-            <v-toolbar color="primary" dark flat>
-              <v-toolbar-title class="headline">Interface administrateur</v-toolbar-title>
+            <v-toolbar color="primary"  flat>
+              <v-toolbar-title class="text-h5">Interface administrateur</v-toolbar-title>
             </v-toolbar>
 
             <v-card-text>
-                <v-form ref="form" v-bind:disabled="disabled" lazy-validation>
+                <v-form ref="form" v-bind:disabled="disabled">
                   <v-text-field type="text" v-model="email"  label="E-Mail" :rules="emailRules" prepend-icon="mdi-at" /> 
                   <v-text-field :type="showPassword ? 'text' : 'password'" v-model="password"  label="Mot de passe" :rules="passwordRules" prepend-icon="mdi-lock" :append-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
                             @click:append="showPassword = !showPassword" /> 
               </v-form>
 
-            <p class="red--text">{{ error }} </p>
+            <p class="text-red">{{ error }} </p>
 
             </v-card-text>
 
             <v-card-actions>
-              <v-btn v-bind:disabled="disabled"  block @click="validate" color="primary">
+              <v-btn v-bind:disabled="disabled"  block variant="elevated" @click="validate" color="primary">
                 <span v-show="!disabled">Se connecter</span>
                 <span v-show="disabled">
                   <v-progress-circular indeterminate color="primary"></v-progress-circular>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import firebase from 'firebase';
+import firebase from '../firebase';
 
 export default {
   data() {
@@ -58,8 +58,8 @@ export default {
     }
   },
   methods: {
-    validate() {
-      if(this.$refs.form.validate()) {
+    async validate() {
+      if((await this.$refs.form.validate()).valid) {
         this.disabled = true;
 
         firebase

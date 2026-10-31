@@ -15,7 +15,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import DashBoardCard from '../../components/DashBoardCard';
+import DashBoardCard from '../../components/DashBoardCard.vue';
 
 
 function groupBy(array, key){
@@ -37,15 +37,17 @@ export default {
         DashBoardCard
     },
     created() {
-        this.users();
-        this.societies();
+        this.loadusers();
+        this.loadsocieties();
     },
-    computed: {
+    methods: {
         ...mapActions({
             loadusers: 'users/loadusers',
             loadsocieties: 'societies/loadsocieties'
 
         }),
+        },
+        computed: {
         ...mapGetters({
             users: 'users/getusers',
             societies: 'societies/getsocieties'

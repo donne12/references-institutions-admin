@@ -9,7 +9,7 @@
                     <v-divider class="mx-4" inset vertical />
                     <v-spacer />
 
-                    <v-btn text icon class="mb-2 ml-2" @click="initialize">
+                    <v-btn variant="text" icon class="mb-2 ml-2" @click="initialize">
                         <v-icon>mdi-refresh</v-icon>
                     </v-btn>
 
@@ -22,10 +22,10 @@
 
         
 
-            <template v-slot:[`body.prepend`]="{ headers }">
+            <template v-slot:[`body.prepend`]="{ columns }">
                 <tr class="mx-0 px-0">
-                    <td :colspan="headers.length" class="mx-0 px-0">
-                        <v-text-field  v-model="search" prepend-inner-icon="mdi-magnify" label="Rechercher" single-line hide-details filled class="px-0 mx-0"/>
+                    <td :colspan="columns.length" class="mx-0 px-0">
+                        <v-text-field  v-model="search" prepend-inner-icon="mdi-magnify" label="Rechercher" single-line hide-details variant="filled" class="px-0 mx-0"/>
                     </td>
                 </tr>
             </template>
@@ -33,7 +33,7 @@
 
             <template  v-slot:[`item.actions`]="{ item }" >
                 <v-icon
-                        medium
+                        size="default"
                         @click="deleteItem(item)"
                         color="error"
                 >
@@ -47,8 +47,8 @@
 
         <v-snackbar v-model="snack" :timeout="3000" :color="snackColor">
             {{ snackText }}
-            <template v-slot:action="{ attrs }">
-                <v-btn v-bind="attrs" text @click="snack = false">Fermer</v-btn>
+            <template v-slot:actions>
+                <v-btn variant="text" @click="snack = false">Fermer</v-btn>
             </template>
         </v-snackbar>
     </div>
@@ -69,13 +69,13 @@
                 dialog: false,
                 headers: [
                     {
-                        text: "Nom",
+                        title: "Nom",
                         align: "start",
                         sortable: true,
-                        value: "nom",
+                        key: "nom",
                     },
-                    { text: "E-mail", value: "email" },
-                    { text: "Actions", value: "actions", sortable: false },
+                    { title: "E-mail", key: "email" },
+                    { title: "Actions", key: "actions", sortable: false },
                 ],
                 editedIndex: -1,
                 editedItem: {
@@ -90,9 +90,6 @@
 
         },
         computed: {
-            ...mapActions({
-                loadusers: 'users/loadusers',
-            }),
             ...mapGetters({
                 users: 'users/getusers'
             }),
@@ -111,6 +108,9 @@
 
         methods: {
             ...mapActions({
+                loadusers: 'users/loadusers',
+            }),
+            ...mapActions({
                 removeusers:'users/removeUsers'
             }),
             getUserById: function(id) {
@@ -125,7 +125,7 @@
             async initialize() {
                 this.loading = true;
                 try {
-                    await this.loadusers;
+                    await this.loadusers();
                 } catch (e) {
                     console.error(e);
                 }
@@ -164,15 +164,6 @@
                     this.editedItem = Object.assign({}, this.defaultItem);
                     this.editedIndex = -1;
                 });
-            },
-        },
-        filters: {
-            truncate: function (text, length, suffix) {
-                if (text.length > length) {
-                    return text.substring(0, length) + suffix;
-                } else {
-                    return text;
-                }
             },
         }
     };

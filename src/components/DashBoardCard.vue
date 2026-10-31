@@ -1,10 +1,10 @@
 <template>
-    <v-card :color="color" elevation="15" outlined>
+    <v-card :color="color" elevation="15" variant="flat">
         <v-card-title>
-            <v-icon color="white" large left>{{ icon }}</v-icon>
-            <span class="white--text">{{ data }}</span>
+            <v-icon color="white" size="large" start>{{ icon }}</v-icon>
+            <span class="text-white">{{ data }}</span>
         </v-card-title>
-        <v-card-subtitle class="white--text">
+        <v-card-subtitle class="text-white">
             {{ title }}
         </v-card-subtitle>
     </v-card>

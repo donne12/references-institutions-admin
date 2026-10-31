@@ -1,12 +1,10 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-import firebase from 'firebase';
-import Login from '../views/Login';
-import Users from "../views/admin/Users";
-import Societies from "../views/admin/Societies";
-import Dashboard from '../views/admin/Dashboard';
+import { createRouter, createWebHistory } from 'vue-router';
+import firebase from '../firebase';
+import Login from '../views/Login.vue';
+import Users from "../views/admin/Users.vue";
+import Societies from "../views/admin/Societies.vue";
+import Dashboard from '../views/admin/Dashboard.vue';
 
-Vue.use(VueRouter)
 
 const routes = [
   {
@@ -28,31 +26,20 @@ const routes = [
   }
 ]
 
-const router = new VueRouter({
-  mode: 'history',
+const router = createRouter({
+  history: createWebHistory(),
   routes
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to) => {
+  const signedIn = !!firebase.auth().currentUser;
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!(firebase.auth().currentUser)) {
-      next({name: '/'});
-    } 
-    else {
-      next();
-    }
+    return signedIn ? true : { path: '/' };
   }
-  else if(to.path == '/') {
-    if(firebase.auth().currentUser) {
-      next({path: '/admin'});
-    }
-    else {
-      next();
-    }
+  if (to.path === '/' && signedIn) {
+    return { path: '/admin' };
   }
-  else {
-    next();
-  }
+  return true;
 });
 
 export default router
